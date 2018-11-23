@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Crystal Collector Game</title>
+    <!-- Reset CSS File-->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <!-- Bootstrap File -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cyrstals Collector</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <!--Instructions for the game displayed here-->
+                <p>You will be given a random number at the start of the game.</p>
+                <p>There are four crystals below. By clicking on a crystal you will add a specific amount of points to
+                    your
+                    total score.</p>
+                <p>You win the game by matching your total score to the random number. You lose the game if your total
+                    score
+                    goes above the random number.</p>
+                <p>The value of each crystal is hidden from you until you click on it.</p>
+                <p>The value of the crystal will change every time the game restarts.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <!--Random target number displayed here-->
+                <h2><span id="targetNumber"></span></h2>
+            </div>
+
+            <div class="col-md-4">
+                <!--Counter for Wins and Losses displayed here-->
+                <p>Wins: <span id="numWin"></span></p>
+                <p>Losses: <span id="numLoss"></span></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <!--Crystal images here-->
+                <br>
+                <img src="assets/images/redGem.png" class="gem" id="redGem">
+                <img src="assets/images/blueGem.png" class="gem" id="blueGem">
+                <img src="assets/images/yellowGem.png" class="gem" id="yellowGem">
+                <img src="assets/images/greenGem.png" class="gem" id="greenGem">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <!--Total score displayed here-->
+                <p>Your total score is:</p>
+                <h2><span id="currentNumber"></span></h2>
+            </div>
+        </div>
+    </div>
+    <!--closes container-->
+
+
+    <script>
+
+        // JavaScript function that waits until page is loaded
+        $(document).ready(function () {
+
+            // Set up variables for first game (no wins or losses)
+            var numWin = 0;
+            var numLoss = 0;
+            var targetNumber;
+            var currentNumber;
+            var values = [1, 2, 4, 7]; //gem values
+
+            function newTargetNumber() {
+                targetNumber = Math.floor(Math.random() * 10 + 20);
+                $("#targetNumber").text(targetNumber);
+            }
+
+            function newGemValue() {
+
+                // Shuffle gem value array
+                values.sort(function () {
+                    return 0.5 - Math.random();
+
+                    for (var i =0; i < values.length; i++) {
+                        thisValue = values[i];
+                        $(".gem").attr('value', thisValue);
+                        
+                    }
+                // $("#redGem").attr('value', values[0]);
+                // $("#blueGem").attr('value', values[1]);
+                // $("#yelowGem").attr('value', values[2]);
+                // $("#greenGem").attr('value', values[3]);
+
+                });
+
+
+            }
+
+            newGemValue();
+
+            function resetGame() {
+                newTargetNumber();
+                $("#currentNumber").clear();
+                newTargetNumber();
+                newGemValue();
+            }
+
+            // Generate new random target number for first game
+            newTargetNumber();
+            $("#numWin").text(numWin);
+            $("#numLoss").text(numLoss);
+
+
+            $(".gem").on("click", function () {
+                currentNumber = currentNumber + this.value;
+
+                // if (targetNumber > currentNumber)
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

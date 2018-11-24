@@ -1,3 +1,7 @@
+body {
+    background-image : url(../images/whitediamond.png);
+}
+
 img {
     border-style : solid;
     border-width : 2px;

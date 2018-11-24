@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="assets/css/reset.css">
     <!-- Bootstrap File -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- My own CSS File-->
+    <link rel="stylesheet" href="assets/css/style.css">
     <!-- JQuery -->
     <script src="https://code.jquery.com/jquery.js"></script>
 </head>
@@ -18,14 +20,12 @@
         <div class="row">
             <div class="col-md-12">
                 <!--Instructions for the game displayed here-->
-                <p>You will be given a random number at the start of the game.</p>
+                <p>You will be given a random number (range 19-120) at the start of the game.</p>
                 <p>There are four crystals below. By clicking on a crystal you will add a specific amount of points to
-                    your
-                    total score.</p>
+                    your total score.</p>
                 <p>You win the game by matching your total score to the random number. You lose the game if your total
-                    score
-                    goes above the random number.</p>
-                <p>The value of each crystal is hidden from you until you click on it.</p>
+                    score goes above the random number.</p>
+                <p>The value of each crystal (range 1-12) is hidden from you until you click on it.</p>
                 <p>The value of the crystal will change every time the game restarts.</p>
             </div>
         </div>
@@ -37,6 +37,8 @@
             </div>
 
             <div class="col-md-4">
+                <!-- Win or Loss message displayed here -->
+                <p><span id="winOrLose"></span></p>
                 <!--Counter for Wins and Losses displayed here-->
                 <p>Wins: <span id="numWin"></span></p>
                 <p>Losses: <span id="numLoss"></span></p>
@@ -53,6 +55,8 @@
                 <img src="assets/images/greenGem.png" class="gem" id="greenGem">
             </div>
         </div>
+
+        <br>
 
         <div class="row">
             <div class="col-md-4">
@@ -74,57 +78,61 @@
             var numWin = 0;
             var numLoss = 0;
             var targetNumber;
-            var currentNumber;
-            var values = [1, 2, 4, 7]; //gem values
+            var currentNumber = 0;
 
             function newTargetNumber() {
-                targetNumber = Math.floor(Math.random() * 10 + 20);
+                // random number from 19 to 120, Math.random is inclusive 0, not 1
+                // used (Math.random() * ((max - min) + 1)) + min  
+                targetNumber = Math.floor(Math.random() * ((120 - 19) + 1)) + 19;
                 $("#targetNumber").text(targetNumber);
             }
 
             function newGemValue() {
-
-                // Shuffle gem value array
-                values.sort(function () {
-                    return 0.5 - Math.random();
-
-                    for (var i =0; i < values.length; i++) {
-                        thisValue = values[i];
-                        $(".gem").attr('value', thisValue);
-                        
-                    }
-                // $("#redGem").attr('value', values[0]);
-                // $("#blueGem").attr('value', values[1]);
-                // $("#yelowGem").attr('value', values[2]);
-                // $("#greenGem").attr('value', values[3]);
-
+                // Each gem gets assigned a random value from 1 through 12
+                $(".gem").each(function () {
+                    var thisValue = Math.ceil(Math.random() * 12);
+                    $(this).attr('value', thisValue);
                 });
-
-
             }
 
-            newGemValue();
-
             function resetGame() {
+                
+                currentNumber = 0;
                 newTargetNumber();
-                $("#currentNumber").clear();
-                newTargetNumber();
+                $("#currentNumber").text(currentNumber);
                 newGemValue();
             }
 
-            // Generate new random target number for first game
+            // Generate new random target number and gem values for first game
             newTargetNumber();
+            newGemValue();
             $("#numWin").text(numWin);
             $("#numLoss").text(numLoss);
 
-
+            // On click accrual of values from gems
             $(".gem").on("click", function () {
-                currentNumber = currentNumber + this.value;
+                $("#winOrLose").empty();
+                currentNumber = currentNumber + parseInt($(this).attr('value'));
+                $("#currentNumber").html(currentNumber);
 
-                // if (targetNumber > currentNumber)
-            });
+                // Conditionals for win and loss
+                if (currentNumber == targetNumber) { // win condition
+                    $("#currentNumber").text(currentNumber);
+                    $("#winOrLose").text("You won!");
+                    numWin++;
+                    $("#numWin").text(numWin);
+                    resetGame();
+                } else if (currentNumber > targetNumber) { // loss condition
+                    $("#currentNumber").text(currentNumber);
+                    $("#winOrLose").text("You lost!");
+                    numLoss++;
+                    $("#numLoss").text(numLoss);
+                    resetGame();
+                }
 
-        });
+            }); // close click
+
+        }); // close document ready
 
     </script>
 

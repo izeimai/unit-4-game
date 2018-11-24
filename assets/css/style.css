@@ -1,0 +1,20 @@
+img {
+    border-style : solid;
+    border-width : 2px;
+}
+
+#redGem {
+    border-color: red;
+}
+
+#blueGem {
+    border-color: blue;
+}
+
+#yellowGem {
+    border-color: yellow;
+}
+
+#greenGem {
+    border-color: green;
+}

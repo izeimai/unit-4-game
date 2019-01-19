@@ -1,4 +1,4 @@
-# unit-4-game
+# Crystals Collector Game
 
 https://izeimai.github.io/unit-4-game/
 
